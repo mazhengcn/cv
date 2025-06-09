@@ -1,3 +1,5 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
 % Awesome CV LaTeX Template for CV/Resume
 %
 % This template has been downloaded from:
@@ -11,6 +13,7 @@
 % CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
 %
 
+
 %-------------------------------------------------------------------------------
 % CONFIGURATIONS
 %-------------------------------------------------------------------------------
@@ -21,11 +24,11 @@
 \geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.8cm, footskip=.5cm}
 
 % Color for highlights
-% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink,
-% awesome-orange, awesome-nephritis, awesome-concrete, awesome-darknight
+% Awesome Colors: awesome-emerald, awesome-skyblue, awesome-red, awesome-pink, awesome-orange
+%                 awesome-nephritis, awesome-concrete, awesome-darknight
 \colorlet{awesome}{awesome-red}
 % Uncomment if you would like to specify your own color
-% \definecolor{awesome}{HTML}{CA63A8}
+% \definecolor{awesome}{HTML}{3E6D9C}
 
 % Colors for text
 % Uncomment if you would like to specify your own color
@@ -38,32 +41,32 @@
 % Set false if you don't want to highlight section with awesome color
 \setbool{acvSectionColorHighlight}{true}
 
-% If you would like to change the social information separator from
-% a pipe (|) to something else
+% If you would like to change the social information separator from a pipe (|) to something else
 \renewcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
 
+
 %-------------------------------------------------------------------------------
-%  PERSONAL INFORMATION
-%  Comment any of the lines below if they are not required
+%	PERSONAL INFORMATION
+%	Comment any of the lines below if they are not required
 %-------------------------------------------------------------------------------
 % Available options: circle|rectangle,edge/noedge,left/right
-% \photo{./examples/profile.png}
-\name{Zheng}{Ma}
-\position{Tenure-track Associate Professor of Mathematcs}
-\address{800 Dongchuan RD Shanghai, Minhang District
-Shanghai 200240, China}
+% \photo[rectangle,edge,right]{./examples/profile}
+\name{Byungjin}{Park}
+\position{Site Reliability Engineer{\enskip\cdotp\enskip}Software Architect}
+\address{235, World Cup buk-ro, Mapo-gu, Seoul, 03936, Republic of Korea}
 
-\mobile{(+86) 13167197986}
-\email{zhengma@sjtu.edu.cn}
-\homepage{http://math.sjtu.edu.cn/faculty/show.php?id=199}
-\github{mazhengcn}
-% \linkedin{posquit0}
+\mobile{(+82) 10-9030-1843}
+\email{posquit0.bj@gmail.com}
+%\dateofbirth{January 1st, 1970}
+\homepage{www.posquit0.com}
+\github{posquit0}
+\linkedin{posquit0}
 % \gitlab{gitlab-id}
 % \stackoverflow{SO-id}{SO-name}
 % \twitter{@twit}
 % \skype{skype-id}
 % \reddit{reddit-id}
-% \medium{medium-id}
+% \medium{madium-id}
 % \kaggle{kaggle-id}
 % \hackerrank{hackerrank-id}
 % \telegram{telegram-username}
@@ -72,40 +75,38 @@ Shanghai 200240, China}
 % \googlescholar{googlescholar-id}{}
 % \extrainfo{extra information}
 
-% \quote{``Be the change that you want to see in the world."}
+\quote{``Be the change that you want to see in the world."}
 
-%-------------------------------------------------------------------------------
-%  BIBLIOGRAPHY
-%-------------------------------------------------------------------------------
-\addbibresource{pubs.bib}
 
 %-------------------------------------------------------------------------------
 \begin{document}
 
 % Print the header with above personal information
 % Give optional argument to change alignment(C: center, L: left, R: right)
-\makecvheader
+\makecvheader[C]
 
 % Print the footer with 3 arguments(<left>, <center>, <right>)
 % Leave any of these blank if they are not needed
 \makecvfooter
-{\today}
-{Zheng Ma~~~·~~~Curriculum Vitae}
-{\thepage}
+  {\today}
+  {Byungjin Park~~~·~~~Résumé}
+  {\thepage}
+
 
 %-------------------------------------------------------------------------------
-%  CV/RESUME CONTENT
-%  Each section is imported separately, open each file in turn to modify content
+%	CV/RESUME CONTENT
+%	Each section is imported separately, open each file in turn to modify content
 %-------------------------------------------------------------------------------
-\input{cv/experience.tex}
-\input{cv/education.tex}
-\input{cv/publications.tex}
-\input{cv/students.tex}
-\input{cv/extracurricular.tex}
-\input{cv/honors.tex}
-% \input{cv/skills.tex}
-% \input{cv/writing.tex}
-% \input{cv/committees.tex}
+\input{resume/summary.tex}
+\input{resume/experience.tex}
+\input{resume/honors.tex}
+\input{resume/certificates.tex}
+% \input{resume/presentation.tex}
+% \input{resume/writing.tex}
+% \input{resume/committees.tex}
+\input{resume/education.tex}
+% \input{resume/extracurricular.tex}
+
 
 %-------------------------------------------------------------------------------
 \end{document}
