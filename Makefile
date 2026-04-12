@@ -1,6 +1,6 @@
 .PHONY: all
 
-CC = xelatex
+CC = lualatex
 SOURCE_DIR = src
 RESUME_DIR = src/resume
 CV_DIR = src/cv
