@@ -24,7 +24,7 @@
 *~
 
 ### Build output ###
-build/
+aux/
 output/
 
 ### Mac OS X ###

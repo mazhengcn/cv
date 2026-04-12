@@ -4,5 +4,5 @@ $bibtex_use = 2;        # use biber
 $biber = 'biber %O %S';
 
 # Output to build/ (relative to the directory latexmk is run from)
-$aux_dir = 'build';
+$aux_dir = 'aux';
 @default_files = ('main.tex');
