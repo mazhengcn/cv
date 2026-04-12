@@ -1,0 +1,56 @@
+%%--------------------------------------------------------------------------
+%%  SECTION 3: MATHEMATICAL THEORY OF DEEP NEURAL NETWORK TRAINING
+%%--------------------------------------------------------------------------
+\section{Mathematical Theory of Deep Neural Network Training}
+
+\noindent\textit{Why it matters.}\enspace
+Deploying neural networks in safety-critical scientific computing demands
+more than empirical validation: it requires a rigorous mathematical
+understanding of training dynamics and generalization.  Without such theory,
+one cannot predict when a neural network will fail---an unacceptable
+situation in nuclear safety transport, clinical imaging, or autonomous
+systems.  Beyond safety, a quantitative theory of learning dynamics is an
+essential design tool: one must understand how a network's inductive bias
+interacts with the spectral properties of the target PDE solution to
+guarantee convergence and inform architecture choices.
+
+\subsection{The Frequency Principle}
+
+A central theme of my theoretical work is the \emph{Frequency Principle}
+(F-principle)~\cite{FP1}: the finding, first systematically documented by
+our group, that gradient descent on neural network loss surfaces fits
+low-frequency components of the target function first and progressively
+captures higher frequencies.  This is \emph{a priori} surprising from an
+approximation-theoretic standpoint, and its mathematical explanation reveals
+a deep connection between the spectral properties of the neural tangent
+kernel and the implicit regularization induced by early stopping.
+
+In~\cite{FP1} we provided the first systematic Fourier analysis
+establishing F-principle for two-layer networks, with extensive controlled
+experiments spanning regression, classification, and PDE residual
+minimization.  Subsequent work established:
+\begin{itemize}
+  \item A \emph{general theory}~\cite{Luo2021} for deep networks of
+    arbitrary width and depth, analyzing the spectral dynamics of the
+    infinite-width neural tangent kernel and yielding closed-form predictions
+    for training convergence rates.
+
+  \item An \emph{exactly solvable linear ODE model}~\cite{Luo2022} that
+    reproduces F-principle dynamics for two-layer networks, enabling analytic
+    predictions of convergence as a function of architecture and learning rate
+    without any approximation.
+
+  \item \emph{Phase diagrams}~\cite{PD21} characterizing the distinct
+    generalization phases of two-layer ReLU networks at the infinite-width
+    limit, providing a rigorous map from initialization and architecture to
+    implicit bias and test error.
+\end{itemize}
+
+These theoretical results carry concrete engineering consequences for the
+design of scientific machine learning methods.  The F-principle predicts
+that na\"{i}ve PINN formulations will fail to resolve high-frequency
+components of multiscale PDE solutions in stiff regimes---exactly the failure
+mode that motivates the APNN architecture.  Conversely, the exact ODE
+model of~\cite{Luo2022} provides quantitative guidance on how network depth
+and width should scale with the regularity of the target PDE solution, turning
+previously heuristic design choices into mathematically principled decisions.

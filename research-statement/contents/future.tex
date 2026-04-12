@@ -1,0 +1,46 @@
+%%--------------------------------------------------------------------------
+%%  SECTION 6: FUTURE RESEARCH DIRECTIONS
+%%--------------------------------------------------------------------------
+\section{Future Research Directions}
+
+My ongoing and planned research evolves along three interconnected frontiers,
+each combining fundamental mathematical questions with high-stakes engineering
+applications.
+
+\medskip\noindent\textbf{Foundation models for plasma and fusion confinement.}
+Building on the DeepRTE paradigm, I am developing operator-learning
+foundation models for the Vlasov--Maxwell system governing fusion plasma
+dynamics.  The scientific target is a surrogate model that replaces PIC
+simulations for tokamak transport calculations, accurate across the full
+kinetic-to-fluid spectrum and evaluable in milliseconds for real-time feedback
+control of plasma shape and stability---a prerequisite for commercially viable
+fusion energy.  This project is being developed in collaboration with plasma
+physicists at SJTU's Institute of Natural Sciences.  A key open challenge is
+the preservation of physical invariants (total energy, $L^2$ norm of the
+distribution function, entropy inequality) within the operator-learning
+architecture, connecting directly to the structure-preserving research thread
+below.
+
+\medskip\noindent\textbf{Convergence theory for generative models in inverse problems.}\enspace
+Current diffusion-model-based inversion methods, including ODE-DPS, rely on
+heuristic justifications for the posterior score approximation step.  I plan
+to develop a rigorous error analysis that bounds the Wasserstein distance
+between the learned approximate posterior and the true Bayesian posterior as
+a function of (i)~the score approximation error, (ii)~the ODE discretization
+step size, and (iii)~the forward model accuracy.  This connects F-principle
+theory---which governs the spectral convergence of the score network---with
+classical Bayesian regularization theory, providing what would be, to our
+knowledge, the first end-to-end convergence guarantee for generative inversion
+methods.
+
+\medskip\noindent\textbf{Structure-preserving operator learning.}\enspace
+Inspired by symplectic integrators and AP schemes in classical numerical
+analysis, I aim to build operator-learning architectures that provably
+preserve nonlinear conservation laws ($L^p$ mass, energy, entropy inequality)
+for Hamiltonian and dissipative PDE systems.  The central technical challenge
+is to enforce these constraints as hard architectural invariants rather than
+loss-function penalties, since penalty-based approaches are known to degrade
+in the stiff multiscale limit---precisely the regime of greatest scientific
+interest.  Success here would generalize the APNN design principle to a broad
+class of physical constraints applicable to fluid mechanics, plasma physics,
+and molecular dynamics simulation.

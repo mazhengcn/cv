@@ -1,0 +1,109 @@
+%%--------------------------------------------------------------------------
+%%  SECTION 2: STRUCTURE-PRESERVING AI FOR KINETIC EQUATIONS
+%%--------------------------------------------------------------------------
+\section{Structure-Preserving AI for Multiscale Kinetic Equations}
+
+\noindent\textit{Why it matters.}\enspace
+Kinetic equations are among the most computationally expensive models in all
+of science.  A single RTE simulation in nuclear reactor transport involves
+$10^8$--$10^{12}$ phase-space unknowns, with run times on classical
+supercomputers measured in hours.  Fusion plasma simulations face a starker
+challenge: real-time feedback control of a tokamak plasma requires millions
+of Vlasov--Maxwell evaluations per second, a throughput that is five to six
+orders of magnitude beyond what current particle-in-cell (PIC) codes can
+deliver.  Equally important is the \emph{multiscale} structure of these
+equations: in the limit $\varepsilon \to 0$ (small Knudsen number), the
+kinetic model degenerates to a macroscopic diffusion or fluid system, but
+classical numerical discretizations become stiff and impose a time-step
+restriction $\Delta t = O(\varepsilon)$, adding an entire order of
+computational difficulty to an already intractable problem.
+
+\subsection{Asymptotic-Preserving Neural Networks}
+
+The central contribution of my group in this area is the development of
+\emph{Asymptotic-Preserving Neural Networks}
+(APNNs)~\cite{APNN2023,APNN2024}: a fundamentally new class of
+physics-informed neural network architectures that provably inherit the
+asymptotic-preserving (AP) property of the best classical schemes.  The
+essential novelty is architectural.  We encode the micro--macro decomposition
+$f = \rho M + \varepsilon g$ (where $M$ is the local Maxwellian equilibrium
+and $g$ is the microscopic deviation) directly into the network's structural
+inductive bias, rather than including it as a soft loss-function term that
+can be violated during optimization.  The ``macro'' branch of the network is
+constrained to satisfy the correct limiting diffusion equation as
+$\varepsilon \to 0$, and the ``micro'' branch is constrained to vanish in the
+same limit.  This is, to our knowledge, the first class of neural network
+methods for kinetic equations with a rigorous, verifiable AP guarantee
+independent of training quality or random seed.
+
+The framework has been applied across the canonical multiscale kinetic
+systems:
+\begin{itemize}
+  \item \emph{Linear transport equations}~\cite{APNN2023,APNN2024}: uniform
+    accuracy from the kinetic regime to the diffusion limit without mesh
+    refinement, on problems where standard PINNs fail completely for
+    $\varepsilon < 10^{-3}$.
+
+  \item \emph{Vlasov--Poisson--Fokker--Planck system in the high-field
+    regime}~\cite{APNN-VPFP2024}: AP behavior in the presence of long-range
+    electromagnetic self-interactions, extending the framework to
+    nonlinearly coupled systems.
+
+  \item \emph{Gray radiative transfer via even--odd decomposition}
+    (AP-CON)~\cite{APCON2024}: operator-learning variants using convolutional
+    DeepONets that generalize across $10^4$ distinct optical parameter
+    configurations without retraining, achieving accuracy competitive with
+    reference $S_N$ solvers while running $10^3\times$ faster at inference.
+\end{itemize}
+
+\noindent Reference implementations are publicly available at
+\href{https://github.com/mazhengcn/apnns}{\texttt{github.com/mazhengcn/apnns}}
+and
+\href{https://github.com/mazhengcn/apcons}{\texttt{github.com/mazhengcn/apcons}},
+providing training scripts, pre-computed datasets, and documented APIs for
+reproducing all published results and adapting the methods to new equations.
+
+\subsection{DeepRTE: A Foundation Model for Radiative Transfer}
+
+A more ambitious development is \textbf{DeepRTE}~\cite{DeepRTE2026}, the
+first pre-trained, attention-based \emph{neural operator foundation model}
+for the steady-state RTE.  Inspired by the large language model paradigm, the
+idea is to train a single model once on a large, systematically generated
+dataset of RTE solutions---covering the full range of physically relevant
+scattering anisotropy parameters $g \in [0.1, 0.8]$---and then deploy it for
+instant inference on any new optical geometry without retraining.  DeepRTE
+learns the solution operator $\mathcal{A}: (I^{-};\, \mu_t, \mu_s, p)
+\mapsto I$, where $I^{-}$ is the boundary inflow, $\mu_t, \mu_s$ are
+attenuation and scattering coefficients, and $p$ is the scattering phase
+function, mapping this entire configuration to the full radiation field.
+
+The engineering realization is as important as the scientific contribution.
+DeepRTE is implemented in JAX/Flax for hardware-accelerated training and
+inference, containerized with Docker for reproducible deployment, and
+distributed as a complete package at
+\href{https://github.com/mazhengcn/deeprte}{\texttt{github.com/mazhengcn/deeprte}},
+with pre-trained model checkpoints and training datasets hosted on Hugging
+Face at
+\href{https://huggingface.co/mazhengcn/deeprte}{\texttt{mazhengcn/deeprte}}.
+The package provides a full training and inference pipeline, enabling
+researchers at other institutions to fine-tune the model on domain-specific
+geometries---nuclear shielding calculations, photon dosimetry, atmospheric
+radiative transfer---without access to our cluster.  This represents a
+qualitative shift: rather than a solver for individual instances, DeepRTE is
+a \emph{reusable computational asset} that amortizes massive training cost
+across the entire scientific community.
+
+\subsection{Asymptotic-Preserving Random Feature Methods}
+
+Beyond neural networks, in collaboration with Jingrun~Chen (USTC), we
+developed an \emph{asymptotic-preserving random feature method}
+(AP-RFM)~\cite{AP-RFM2025} for multiscale radiative transfer.  Random
+feature methods expand the solution in a random basis
+$\sigma(\omega_j \cdot x + b_j)$ with fixed random weights, offering
+mesh-free approximation with theoretically controllable error at
+$O(N)$ complexity.  By encoding the micro--macro decomposition into both
+the basis construction and the least-squares fitting, AP-RFM achieves uniform
+accuracy across all Knudsen numbers at a cost substantially lower than neural
+network training.  This result demonstrates that the AP design principle is
+a general mathematical framework---not a property specific to any particular
+machine learning architecture.
