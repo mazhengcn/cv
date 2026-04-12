@@ -1,22 +1,20 @@
-.PHONY: all
+.PHONY: all clean
 
 CC = lualatex
-SOURCE_DIR = src
-RESUME_DIR = src/resume
-CV_DIR = src/cv
-RESUME_SRCS = $(shell find $(RESUME_DIR) -name '*.tex')
-CV_SRCS = $(shell find $(CV_DIR) -name '*.tex')
+CV_DIR = cv
+CONTENTS_DIR = cv/contents
+CV_SRCS = $(shell find $(CONTENTS_DIR) -name '*.tex')
+BUILD_DIR = cv/build
+OUTPUT_DIR = output
 
-all: $(foreach x, cv resume, $x.pdf)
+all: $(OUTPUT_DIR)/main.pdf
 
-resume.pdf: $(SOURCE_DIR)/resume.tex $(RESUME_SRCS)
-	$(CC) -output-directory=$(EXAMPLES_DIR) $<
-
-cv.pdf: $(SOURCE_DIR)/cv.tex $(CV_SRCS)
-	$(CC) -output-directory=$(EXAMPLES_DIR) $<
-
-coverletter.pdf: $(SOURCE_DIR)/coverletter.tex
-	$(CC) -output-directory=$(EXAMPLES_DIR) $<
+$(OUTPUT_DIR)/main.pdf: $(CV_DIR)/main.tex $(CV_SRCS) $(CV_DIR)/pubs.bib
+	mkdir -p $(BUILD_DIR) $(OUTPUT_DIR)
+	$(CC) -output-directory=$(BUILD_DIR) $<
+	biber $(BUILD_DIR)/main
+	$(CC) -output-directory=$(BUILD_DIR) $<
+	cp $(BUILD_DIR)/main.pdf $@
 
 clean:
-	rm -rf $(SOURCE_DIR)/*.pdf
+	rm -rf $(BUILD_DIR)/ $(OUTPUT_DIR)/
