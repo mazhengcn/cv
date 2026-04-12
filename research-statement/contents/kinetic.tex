@@ -1,7 +1,7 @@
 %%--------------------------------------------------------------------------
-%%  SECTION 2: STRUCTURE-PRESERVING AI FOR KINETIC EQUATIONS
+%%  SECTION 2: KINETIC EQUATIONS & DEEPRTE
 %%--------------------------------------------------------------------------
-\section{Structure-Preserving AI for Multiscale Kinetic Equations}
+\section{Foundation Models \& Structure-Preserving AI for Kinetic Equations}
 
 \noindent\textit{Why it matters.}\enspace
 Kinetic equations are among the most computationally expensive models in all
@@ -17,6 +17,54 @@ kinetic model degenerates to a macroscopic diffusion or fluid system, but
 classical numerical discretizations become stiff and impose a time-step
 restriction $\Delta t = O(\varepsilon)$, adding an entire order of
 computational difficulty to an already intractable problem.
+
+\subsection{DeepRTE: A Foundation Model for Radiative Transfer}
+
+\emph{My most recent and important work} is the development of
+\textbf{DeepRTE}~\cite{DeepRTE2026}, the first pre-trained, attention-based
+\emph{neural operator foundation model} for the steady-state RTE.  Inspired
+by the large language model paradigm, the idea is to train a single model
+once on a massive, systematically generated dataset of RTE solutions---covering
+the full range of physically relevant scattering anisotropy parameters
+$g \in [0.1, 0.8]$---and then deploy it for instant inference on any new
+optical geometry without retraining.  DeepRTE learns the solution operator
+$\mathcal{A}: (I^{-};\, \mu_t, \mu_s, p) \mapsto I$, mapping the entire
+spatial configuration of inflow boundaries, attenuation/scattering
+coefficients, and phase functions directly to the full radiation field.
+
+\begin{figure}[H]
+  \centering
+  \small\sffamily
+  \rowcolors{2}{sectionbg}{white}
+  \begin{tabularx}{0.98\textwidth}{
+      >{\hsize=1.2\hsize\raggedright\arraybackslash}X
+      >{\hsize=0.9\hsize\raggedright\arraybackslash}X
+      >{\hsize=0.9\hsize\raggedright\arraybackslash}X
+    }
+    \toprule
+    \rowcolor{accentcolor!10}
+    \textbf{\textcolor{accentcolor}{Aspect}} & \textbf{\textcolor{accentcolor}{Classical Solvers (e.g., $S_N$)}} & \textbf{\textcolor{accentcolor}{DeepRTE Foundation Model}} \\
+    \textbf{Run Time (Inference)} & $10^4$--$10^6$ seconds per geometry & $\sim 10^{-2}$ s (GPU accel., $\sim 10^5\times$ speedup) \\
+    \textbf{Mathematical Scope} & Equation discretization & Direct operator mapping $\mathcal{A}: (I^{-}, \mu) \mapsto I$ \\
+    \textbf{Reusability} & None natively & Parameterized across optical $g \in [0.1, 0.8]$ \\
+    \textbf{Distribution} & Specialized Fortran/C++ libraries & Hugging Face checkpoints, JAX/Flax APIs \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{-0.5em}
+  \caption{A paradigm shift in radiative transfer: DeepRTE replaces costly per-instance simulation with instant inference across variable geometries.}
+\end{figure}
+
+The engineering realization is as critical as the mathematical novelty.  DeepRTE
+is implemented entirely in JAX/Flax for maximum hardware acceleration,
+containerized with Docker for reproducible deployment, and distributed via:
+\begin{itemize}
+  \item GitHub package with full training/inference pipeline:\\\texttt{\href{https://github.com/mazhengcn/deeprte}{github.com/mazhengcn/deeprte}}
+  \item Pre-trained checkpoints and datasets on Hugging Face:\\\texttt{\href{https://huggingface.co/mazhengcn/deeprte}{huggingface.co/mazhengcn/deeprte}}
+\end{itemize}
+This represents a qualitative shift in computational physics: rather than an
+isolated scheme for an individual problem, DeepRTE provides the community
+with a \emph{reusable computational asset} that amortizes the immense initial
+training cost across thousands of downstream, domain-specific tasks.
 
 \subsection{Asymptotic-Preserving Neural Networks}
 
@@ -56,42 +104,11 @@ systems:
     reference $S_N$ solvers while running $10^3\times$ faster at inference.
 \end{itemize}
 
-\noindent Reference implementations are publicly available at
-\href{https://github.com/mazhengcn/apnns}{\texttt{github.com/mazhengcn/apnns}}
+Reference implementations with training scripts, pre-computed datasets, and
+documented APIs are publicly available at
+\texttt{\href{https://github.com/mazhengcn/apnns}{github.com/mazhengcn/apnns}}
 and
-\href{https://github.com/mazhengcn/apcons}{\texttt{github.com/mazhengcn/apcons}},
-providing training scripts, pre-computed datasets, and documented APIs for
-reproducing all published results and adapting the methods to new equations.
-
-\subsection{DeepRTE: A Foundation Model for Radiative Transfer}
-
-A more ambitious development is \textbf{DeepRTE}~\cite{DeepRTE2026}, the
-first pre-trained, attention-based \emph{neural operator foundation model}
-for the steady-state RTE.  Inspired by the large language model paradigm, the
-idea is to train a single model once on a large, systematically generated
-dataset of RTE solutions---covering the full range of physically relevant
-scattering anisotropy parameters $g \in [0.1, 0.8]$---and then deploy it for
-instant inference on any new optical geometry without retraining.  DeepRTE
-learns the solution operator $\mathcal{A}: (I^{-};\, \mu_t, \mu_s, p)
-\mapsto I$, where $I^{-}$ is the boundary inflow, $\mu_t, \mu_s$ are
-attenuation and scattering coefficients, and $p$ is the scattering phase
-function, mapping this entire configuration to the full radiation field.
-
-The engineering realization is as important as the scientific contribution.
-DeepRTE is implemented in JAX/Flax for hardware-accelerated training and
-inference, containerized with Docker for reproducible deployment, and
-distributed as a complete package at
-\href{https://github.com/mazhengcn/deeprte}{\texttt{github.com/mazhengcn/deeprte}},
-with pre-trained model checkpoints and training datasets hosted on Hugging
-Face at
-\href{https://huggingface.co/mazhengcn/deeprte}{\texttt{mazhengcn/deeprte}}.
-The package provides a full training and inference pipeline, enabling
-researchers at other institutions to fine-tune the model on domain-specific
-geometries---nuclear shielding calculations, photon dosimetry, atmospheric
-radiative transfer---without access to our cluster.  This represents a
-qualitative shift: rather than a solver for individual instances, DeepRTE is
-a \emph{reusable computational asset} that amortizes massive training cost
-across the entire scientific community.
+\texttt{\href{https://github.com/mazhengcn/apcons}{github.com/mazhengcn/apcons}}.
 
 \subsection{Asymptotic-Preserving Random Feature Methods}
 

@@ -1,0 +1,55 @@
+%%--------------------------------------------------------------------------
+%%  SECTION 5: FAST SPECTRAL ALGORITHMS
+%%--------------------------------------------------------------------------
+\section{Fast Spectral Algorithms for Kinetic Equations}
+
+\noindent\textit{Why it matters.}\enspace
+Classical fast algorithms play an indispensable dual role in my research
+program.  They are the reference solvers that generate ground-truth data
+for training and validating all machine learning models, and they are
+independent scientific contributions that extend the computational frontier
+of kinetic theory.  Without reliable, efficient classical solvers, the
+benchmarking of any AI-based method is scientifically unsound.
+
+The direct evaluation of the Boltzmann collision integral at velocity-space
+resolution $N^3$ requires $O(N^6)$ operations per time step---completely
+intractable for three-dimensional non-equilibrium gas dynamics even on
+modern supercomputers.  Fast spectral methods that exploit the convolution
+structure of the collision operator in Fourier space reduce this to
+$O(N^4 \log N)$ for the elastic Boltzmann operator, but the \emph{inelastic}
+Boltzmann operator---governing granular gases, vibrationally excited molecular
+gases, and certain plasma-neutral interactions---had not been treated by any
+algorithm achieving better than $O(N^6)$ prior to our work.
+
+During my postdoctoral appointment at Purdue University (mentored by
+Jingwei~Hu), I developed a \emph{fast spectral method for the inelastic
+Boltzmann collision operator}~\cite{HU2019119}, achieving $O(N^2 \log N)$
+complexity per velocity mode by uncovering a previously unrecognized
+convolution structure in the inelastic collision kernel after a suitable
+change of variables in Fourier space.  This is, to our knowledge, the
+first sub-cubic algorithm for the inelastic operator.  The method handles
+the full non-equilibrium collision dynamics and has been validated against
+Direct Simulation Monte Carlo (DSMC) benchmarks for heated granular gas
+flows across a broad range of inelasticity parameters.
+
+The implementation is released as open-source software:
+\begin{itemize}
+  \item \href{https://github.com/mazhengcn/fsm-inelastic-boltzmann}{%
+    \texttt{mazhengcn/fsm-inelastic-boltzmann}}: the complete spectral
+    solver for the inelastic Boltzmann operator.
+  \item \href{https://github.com/mazhengcn/kipack}{\texttt{mazhengcn/kipack}}:
+    a high-performance Python package supporting both elastic and inelastic
+    Boltzmann operators, with GPU acceleration via JAX/CuPy and a clean
+    NumPy interface.
+\end{itemize}
+These tools are actively used in our group and by external collaborators to
+generate training data for APNNs and DeepRTE, closing the loop between fast
+classical algorithms and modern machine learning.
+
+Earlier work~\cite{APUQ-Jin2017,APUQ-Jin2018} developed rigorous AP--UQ
+methods for uncertain transport and hyperbolic equations via stochastic
+Galerkin discretizations, establishing uniform spectral convergence from the
+kinetic regime to the diffusion limit in the presence of random inputs.  These
+results provided both the mathematical framework and the design intuition that
+informed the APNN architecture, and they remain the most complete rigorous
+analysis of uncertainty quantification for multiscale kinetic theory.

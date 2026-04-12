@@ -50,7 +50,44 @@ These theoretical results carry concrete engineering consequences for the
 design of scientific machine learning methods.  The F-principle predicts
 that na\"{i}ve PINN formulations will fail to resolve high-frequency
 components of multiscale PDE solutions in stiff regimes---exactly the failure
-mode that motivates the APNN architecture.  Conversely, the exact ODE
+mode that motivates the APNN architecture.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+        width=0.85\textwidth,
+        height=5cm,
+        xmin=0, xmax=2000,
+        ymin=0, ymax=1.2,
+        xlabel={Training Epochs},
+        ylabel={Normalized Error},
+        legend style={at={(0.95,0.95)}, anchor=north east, nodes={scale=0.8, transform shape}},
+        grid=major,
+        cycle list={
+          {linkblue, thick},
+          {orange, thick, dashed},
+          {green!60!black, thick, dashdotted}
+        }
+      ]
+      % Simulation of F-principle training dynamics
+      % Low freq drops fast, high freq drops slow
+      \addplot[domain=0:2000, samples=50] {exp(-x/200)};
+      \addlegendentry{Low Frequency ($k=1$)}
+
+      \addplot[domain=0:2000, samples=50] {0.8*exp(-x/800) + 0.2};
+      \addlegendentry{Mid Frequency ($k=4$)}
+
+      \addplot[domain=0:2000, samples=50] {0.9*exp(-x/3000) + 0.1};
+      \addlegendentry{High Frequency ($k=8$)}
+    \end{axis}
+  \end{tikzpicture}
+  \vspace{-1.5em}
+  \caption{Illustration of the Frequency Principle (F-principle): gradient-based training of neural networks fits target functions sequentially according to frequency, prioritizing low frequencies and exhibiting spectral bias against high frequencies.}
+  \label{fig:f-principle}
+\end{figure}
+
+Conversely, the exact ODE model
 model of~\cite{Luo2022} provides quantitative guidance on how network depth
 and width should scale with the regularity of the target PDE solution, turning
 previously heuristic design choices into mathematically principled decisions.

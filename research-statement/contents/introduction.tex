@@ -47,9 +47,63 @@ produced more than 30 peer-reviewed articles and a suite of open-source
 packages---hosted at
 \href{https://github.com/mazhengcn}{\texttt{github.com/mazhengcn}}---that
 are actively used by research groups in applied mathematics, physics, and
-engineering.  The work spans four interconnected thrusts: \textbf{(1)
-structure-preserving AI for multiscale kinetic equations}; \textbf{(2) a
-mathematical theory of deep neural network training}; \textbf{(3)
-AI-driven methods for PDE-constrained inverse problems}; and \textbf{(4)
+engineering.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      font=\small\sffamily,
+      node distance=1.8cm and 3cm,
+      box/.style={
+        rectangle,
+        rounded corners=4pt,
+        draw=#1!60!black,
+        fill=#1!5,
+        thick,
+        text width=4.5cm,
+        align=center,
+        minimum height=1.8cm,
+        drop shadow={opacity=0.1, shadow xshift=2pt, shadow yshift=-2pt}
+      },
+      arrow/.style={-{Stealth[scale=1.2]}, thick, color=accentcolor!80}
+    ]
+    % Core Node
+    \node[box=accentcolor, draw=accentcolor, fill=accentcolor!5, text width=4.5cm, font=\large\bfseries\sffamily\color{accentcolor}] (core) {Full-Stack\\[0.1em]AI for Science};
+
+    % Surrounding Nodes
+    \node[box=accentcolor!60!blue, above right=of core, xshift=0cm, yshift=0cm] (thrust1) {\textbf{T1: Multiscale AI}\\[0.2em]APNNs \& DeepRTE Foundation Models};
+    \node[box=accentcolor!50!cyan, right=of core, xshift=-1cm, yshift=0cm] (thrust2) {\textbf{T2: PDE Inverse Problems}\\[0.2em]ODE-DPS Gen. Prior \& Unsupervised FWI};
+    \node[box=accentcolor!60!purple, below right=of core, xshift=0cm, yshift=0cm] (thrust3) {\textbf{T3: Fast Spectral Solvers}\\[0.2em]Asymptotic-Preserving UQ \& Benchmarking Data};
+
+    % Connections
+    \draw[arrow] (core.east) to[out=0, in=180] (thrust1.west);
+    \draw[arrow] (core.east) -- (thrust2.west);
+    \draw[arrow] (core.east) to[out=0, in=180] (thrust3.west);
+
+    % Sub-connections to show synergy
+    \draw[arrow, dashed, -stealth, draw=accentcolor!60!blue] (thrust3.north) to[out=90, in=270] node[right=0.1cm, font=\scriptsize\sffamily\color{black!70}, align=center]{Reference\\Data} (thrust2.south);
+    \draw[arrow, dashed, -stealth, draw=accentcolor!60!blue] (thrust2.north) to[out=90, in=270] node[right=0.1cm, font=\scriptsize\sffamily\color{black!70}, align=center]{Neural\\Priors} (thrust1.south);
+
+    % Outer background for vertical integration
+    \begin{scope}[on background layer]
+      \node[
+        rectangle,
+        rounded corners=8pt,
+        draw=gray!30,
+        fill=gray!3,
+        dashed,
+        fit=(thrust1) (thrust2) (thrust3) (core),
+        inner sep=0.8cm
+      ] (bg) {};
+    \end{scope}
+    \node[anchor=south west, font=\small\bfseries\sffamily\color{accentcolor!80}, text width=12cm] at (bg.north west) {Vertically Integrated: Analysis $\to$ Algorithms $\to$ Open-Source Delivery};
+  \end{tikzpicture}
+  \vspace{-1em}
+  \caption{Overview of my research program. The unifying methodology involves rigorous mathematical analysis acting as hard constraints on AI architectures, supported by fast classical solvers for theoretical and numerical validation.}
+\end{figure}
+
+The work spans three interconnected thrusts: \textbf{(1)
+structure-preserving AI for multiscale kinetic equations}; \textbf{(2)
+AI-driven methods for PDE-constrained inverse problems}; and \textbf{(3)
 fast spectral algorithms} that serve as both the theoretical bedrock and the
 benchmark gold standard for the AI-based methods.

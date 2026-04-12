@@ -1,0 +1,366 @@
+%%==========================================================================
+%%  Teaching Statement — Zheng Ma
+%%==========================================================================
+\documentclass[12pt, a4paper]{article}
+
+%--- Line spacing -----------------------------------------------------------
+\usepackage{setspace}
+\setstretch{1.15}
+
+%--- Encoding & fonts (LuaLaTeX) --------------------------------------------
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\usepackage{microtype}
+
+%--- CJK support (LuaLaTeX) -------------------------------------------------
+\usepackage{luatexja-fontspec}
+\setmainjfont{Noto Serif CJK SC}
+\setsansjfont{Noto Sans CJK SC}
+
+%--- Page geometry ----------------------------------------------------------
+\usepackage[
+  top=2.4cm, bottom=2.4cm,
+  left=2.5cm, right=2.5cm,
+  headheight=14pt
+]{geometry}
+
+%--- Color ------------------------------------------------------------------
+\usepackage{xcolor}
+\definecolor{accentcolor}{HTML}{800000}
+\definecolor{linkcolor}{HTML}{1A3A5C}
+\definecolor{sectionbg}{HTML}{F8F9FA}
+
+%--- Math -------------------------------------------------------------------
+\usepackage{amsmath, amssymb, amsthm, bm}
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Termes Math}
+
+%--- Tables & Drawing -------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{longtable}
+
+%--- Headers / footers ------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textit{Teaching Statement \,---\, Zheng Ma}}
+\fancyhead[R]{\small\textit{April 2026}}
+\fancyfoot[C]{\small\thepage}
+
+%--- Section titles ---------------------------------------------------------
+\usepackage{titlesec}
+\titleformat{\section}
+{\large\sffamily\bfseries\color{accentcolor}}{\thesection\enspace}{0em}{}
+\titlespacing*{\section}{0pt}{3.2ex plus 0.8ex minus 0.4ex}{0.5ex plus 0.1ex}
+
+\titleformat{\subsection}
+{\normalsize\sffamily\bfseries\color{black!90}}{\thesubsection\enspace}{0em}{}
+\titlespacing*{\subsection}{0pt}{2.2ex plus 0.5ex minus 0.2ex}{0.8ex}
+
+%--- Lists ------------------------------------------------------------------
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=2em, itemsep=0.3em, topsep=0.5em, parsep=0.1em}
+\setlist[enumerate]{leftmargin=2em, itemsep=0.3em, topsep=0.5em, parsep=0.1em}
+
+%--- Hyperref ---------------------------------------------------------------
+\usepackage[
+  colorlinks=true,
+  linkcolor=linkcolor,
+  citecolor=linkcolor,
+  urlcolor=linkcolor,
+  pdftitle={Teaching Statement --- Zheng Ma},
+  pdfauthor={Zheng Ma}
+]{hyperref}
+
+%--- Typography -------------------------------------------------------------
+\usepackage{parskip}
+\setlength{\parskip}{0.6em plus 0.2em}
+\setlength{\parindent}{0pt}
+\frenchspacing
+\usepackage{xurl}
+
+%%==========================================================================
+%%  DOCUMENT
+%%==========================================================================
+\begin{document}
+
+%%--------------------------------------------------------------------------
+%%  TITLE BLOCK
+%%--------------------------------------------------------------------------
+\begin{center}
+  {\LARGE\bfseries Teaching Statement}\\[0.8em]
+  {\large Zheng Ma}\\[0.3em]
+  {\normalsize
+  Tenure-Track Associate Professor of Mathematics, Shanghai Jiao Tong University}\\[0.25em]
+  {\normalsize \href{mailto:mazheng@sjtu.edu.cn}{mazheng@sjtu.edu.cn}}
+\end{center}
+
+\vspace{0.5em}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.2em}
+
+%%--------------------------------------------------------------------------
+%%  SECTION 1 — Teaching Philosophy
+%%--------------------------------------------------------------------------
+\section{Teaching Philosophy}
+
+My approach to teaching mathematics and computation rests on a conviction that
+has grown stronger with each passing year: the most lasting gift a teacher can
+give is not a body of knowledge, but a \emph{way of thinking}.
+Content becomes outdated; methods endure.
+Every course I teach --- from undergraduate numerical analysis to graduate
+high-performance scientific computing --- is organized around this principle.
+
+\subsection{Teach the Method, Not the Content}
+
+In a rapidly evolving technological landscape, specific algorithms or
+numerical schemes may be superseded by new tools within years of a student's
+graduation.
+What cannot be superseded is the ability to \emph{ask the right question},
+to \emph{break a hard problem into tractable pieces}, and to
+\emph{reason about approximation and error}.
+Rather than covering the maximum possible material, I deliberately slow down
+at foundational ideas --- convergence, stability, well-posedness, the interplay
+between continuous and discrete mathematics --- and ask students to derive,
+question, and reconstruct.
+In my \emph{Scientific Computing} and \emph{Numerical Analysis} courses,
+for instance, students are required to implement algorithms from scratch
+before they are permitted to use library routines.
+Only by feeling the difficulty of the implementation do they truly internalize why
+a method works, and where it might fail.
+
+\subsection{Bidirectional Learning: Teaching as Conversation}
+
+I regard every class as an opportunity to learn, not merely to instruct.
+Students at Shanghai Jiao Tong University come from diverse backgrounds in
+mathematics, engineering, and computer science; their questions and
+misconceptions constantly reveal blind spots in my own understanding and
+expose gaps in my explanations.
+I welcome challenge, confusion, and pushback as productive signals.
+Over the years, student questions have prompted me to revise derivations,
+discover cleaner proofs, and occasionally reconsider aspects of my own
+research.
+Teaching, at its best, is a dialogue: the teacher shapes the student's
+thinking, and the student sharpens the teacher's.
+
+\subsection{Connecting Mathematics to Applications: Emphasizing \emph{Hands-On} Competence}
+
+Pure mathematical theory, however beautiful, becomes inert without contact
+with real problems.
+I insist on grounding every abstract concept in a concrete application.
+In \emph{Scientific Computing}, classical topics such as iterative solvers and
+spectral methods are immediately paired with physical simulation exercises ---
+heat diffusion, fluid flow, wave propagation.
+In \emph{Hands-On Deep Learning (Python)}, students do not merely read about
+neural networks; they build, train, and diagnose them on genuine datasets.
+The course title captures the philosophy perfectly: ``\emph{动手}'' (hands-on)
+is not an optional enrichment but the primary mode of learning.
+
+I believe that mathematical education in the service of engineering and science
+must produce graduates who can \emph{close the loop} between theorem and code,
+between analysis and experiment.
+A student who can prove a convergence theorem but cannot implement the method,
+or who can train a model but cannot explain why it converges, has only half
+the competence the modern world demands.
+
+\subsection{Teaching for the AI Era: Breadth, Agility, and Judgment}
+
+Artificial intelligence is reshaping what it means to be a scientist or
+engineer.
+Rote memorization and narrow specialization are becoming less valuable;
+the ability to \emph{navigate unfamiliar territory quickly} is becoming
+essential.
+My teaching therefore emphasizes three meta-skills:
+
+\begin{enumerate}
+  \item \textbf{Learning how to learn.}
+    I dedicate time in every course to discussing how to read technical
+    literature efficiently, how to identify key ideas in a new paper or
+    software library, and how to use AI tools as \emph{accelerators}
+    rather than crutches.
+    A student who can orient themselves in an unfamiliar field within days ---
+    rather than months --- will always outpace one who knows a single
+    domain deeply but cannot venture beyond it.
+
+  \item \textbf{Prioritizing what matters.}
+    Not all knowledge is equally important.
+    I teach students to distinguish \emph{foundations} (which generalize
+    across fields) from \emph{techniques} (which are domain-specific and
+    often searchable) from \emph{trivia} (which need not be memorized at all).
+    In an era when large language models can retrieve facts on demand,
+    the scarce resource is \emph{judgment}: knowing what to ask, what to trust,
+    and what to verify.
+
+  \item \textbf{Width before depth.}
+    My guiding heuristic for a student's early career is: \emph{go wider
+    first, deeper with AI when you need it}.
+    Broad exposure to mathematics, computation, physics, and engineering creates
+    the cross-domain intuitions that spark creative research.
+    Depth can be acquired on demand, especially with the assistance of modern
+    AI tools, but breadth --- the ability to see unexpected connections ---
+    must be cultivated progressively over years.
+    I encourage my students to take courses outside their immediate specialty,
+    to read across disciplines, and to resist the temptation of premature
+    specialization.
+\end{enumerate}
+
+%%--------------------------------------------------------------------------
+%%  SECTION 2 — Courses Taught
+%%--------------------------------------------------------------------------
+\section{Teaching Experience}
+
+Since joining Shanghai Jiao Tong University in 2020, I have taught a range of
+undergraduate and graduate courses spanning computational mathematics, numerical
+analysis, and artificial intelligence.
+The table below summarizes the courses to which I have made substantial
+independent contributions.
+
+\vspace{0.5em}
+
+{\small
+  \begin{longtable}{@{}p{5.8cm} l l r r@{}}
+    \toprule
+    \textbf{Course} & \textbf{Level} & \textbf{Term} & \textbf{Credits} & \textbf{Hours (personal)} \\
+    \midrule
+    \endhead
+    \bottomrule
+    \endfoot
+    数值分析 (Numerical Analysis)
+    & UG & 2025--26 S2 & 3 & 48 \\
+    人工智能基础（A）(AI Fundamentals)
+    & UG & 2025--26 S2 & 2 & 32 \\
+    动手学深度学习（Python）
+    & UG & 2025--26 S1 & 2 & 32 \\
+    计算方法 (Computational Methods)
+    & Grad & 2025--26 S1 & 3 & 48 \\[2pt]
+    科学计算 (Scientific Computing)
+    & UG & 2024--25 S2 & 3 & 48 \\
+    研讨课~II (Seminar II)
+    & UG & 2024--25 S2 & 3 & 48 \\
+    人工智能导论 (Introduction to AI)
+    & UG & 2024--25 S2 & 1 & 16 \\
+    计算方法 (Computational Methods)
+    & Grad & 2024--25 S1 & 3 & 48 \\
+    微分方程的高性能计算
+    & Grad & 2024--25 S1 & 2 & 32 \\[2pt]
+    科学计算 (Scientific Computing)
+    & UG & 2023--24 S2 & 3 & 48 \\
+    科学问题的可计算建模
+    & Grad & 2023--24 S2 & 1 & 16 \\
+    计算方法 (Computational Methods)
+    & Grad & 2023--24 S1 & 3 & 48 \\
+    微分方程的高性能计算
+    & Grad & 2023--24 S1 & 1 & 16 \\[2pt]
+    科学计算 (Scientific Computing)
+    & UG & 2022--23 S2 & 3 & 48 \\
+    计算方法 (Computational Methods)
+    & Grad & 2022--23 S1 & 3 & 48 \\[2pt]
+    科学计算 (Scientific Computing)
+    & UG & 2021--22 S2 & 3 & 48 \\
+    计算方法 (Computational Methods)
+    & Grad & 2021--22 S1 & 3 & 48 \\[2pt]
+    微分方程数值解法 (Numerical PDEs)
+    & Grad & 2020--21 S2 & 3 & 48 \\
+    科学计算 (Scientific Computing)
+    & UG & 2020--21 S2 & 3 & 48 \\
+  \end{longtable}
+}
+
+Graduate sections of \emph{Computational Methods} (MATH6004) are delivered in
+parallel Chinese and English to accommodate international students.
+Undergraduate courses are all conducted in Chinese.
+
+%%--------------------------------------------------------------------------
+%%  SECTION 3 — Course Development
+%%--------------------------------------------------------------------------
+\section{Course Development and Innovation}
+
+\subsection{Hands-On Deep Learning (Python)}
+
+In 2025 I introduced \emph{Hands-On Deep Learning (Python)} (MATH2806), a
+new required course for undergraduate mathematics majors.
+The course is modeled on the open-source textbook \emph{Dive into Deep Learning}
+(\url{https://d2l.ai}), whose central pedagogical idea --- every concept is
+immediately paired with executable code --- aligns perfectly with my
+philosophy of hands-on learning.
+Students implement, from scratch, key architectures including multilayer
+perceptrons, convolutional neural networks, recurrent networks, and
+transformers, using PyTorch.
+The course bridges the department's traditional numerical analysis curriculum
+and the rapidly evolving practice of machine learning, and it reflects my
+belief that a modern applied mathematician must be fluent in both worlds.
+
+\subsection{Scientific Computing as a Bridge Course}
+
+\emph{Scientific Computing} (MATH2802) has been my primary undergraduate
+teaching responsibility since my arrival at SJTU.
+Over successive offerings I have steadily increased the programming component,
+migrating from MATLAB-based exercises to Python/NumPy/SciPy workflows.
+Problem sets now include open-ended simulation projects --- modeling
+epidemiological dynamics, simulating partial differential equations on irregular
+domains, and benchmarking iterative solvers on sparse systems drawn from
+finite element discretizations.
+These projects require students to integrate mathematical analysis, algorithmic
+thinking, and software engineering, and they have produced some of the most
+creative and rigorous student work I have encountered.
+
+\subsection{AI Literacy for Mathematics Students}
+
+As AI tools become ubiquitous, I have incorporated structured discussions of
+AI-assisted research and learning into multiple courses.
+In \emph{Introduction to AI} (MATH1804) and the general-education course
+\emph{AI Fundamentals} (MATH1116), I go beyond tool demonstrations to address
+epistemic questions: How do you know when to trust an AI-generated result? How
+do you efficiently decompose a learning task so that AI tools accelerate rather
+than substitute for understanding?
+These conversations are not asides; they are central to preparing students for
+careers in which human--AI collaboration will be the norm.
+
+%%--------------------------------------------------------------------------
+%%  SECTION 4 — Future Directions
+%%--------------------------------------------------------------------------
+\section{Future Directions}
+
+Looking ahead, I plan to develop a new graduate course on
+\emph{Scientific Machine Learning} that unifies classical numerical analysis
+with modern deep learning methodology --- covering physics-informed neural
+networks, neural operators, and the mathematical foundations of generative
+models, with a strong emphasis on provable guarantees and
+hands-on computational projects.
+
+I also intend to expand the use of project-based assessment across my courses,
+replacing some conventional examinations with open-ended computational
+investigations that require students to formulate, solve, and critically
+evaluate a mathematical problem of their choosing.
+This approach rewards precisely the skills I most want to cultivate:
+breadth of vision, agility in learning, and rigorous judgment.
+
+Finally, I am committed to making high-quality mathematical education in
+scientific computing accessible beyond SJTU's campus.
+Several of my courses already have openly available lecture notes and code
+repositories, and I plan to continue developing these resources in collaboration
+with colleagues and students.
+
+%%--------------------------------------------------------------------------
+%%  CLOSING
+%%--------------------------------------------------------------------------
+\vspace{1.5em}
+\noindent\rule{\textwidth}{0.4pt}
+\vspace{0.3em}
+
+\noindent
+{\small
+  Teaching, for me, is inseparable from research: both are acts of inquiry,
+  and both are most productive when conducted in a spirit of genuine curiosity
+  and mutual respect.
+  I am grateful every semester for the students who challenge my thinking,
+  correct my mistakes, and remind me why mathematics matters.
+}
+
+\end{document}
