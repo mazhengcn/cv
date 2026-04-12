@@ -1,28 +1,29 @@
 .PHONY: all clean
 
-CV_DIR          = cv
+DOCS   = cv research-statement teaching-statement
+PDFS   = $(patsubst %, $(OUTPUT_DIR)/%.pdf, $(DOCS))
+
 CV_CONTENTS_DIR = cv/contents
 CV_SRCS         = $(shell find $(CV_CONTENTS_DIR) -name '*.tex')
 
-RS_DIR          = research-statement
 RS_CONTENTS_DIR = research-statement/contents
 RS_SRCS         = $(shell find $(RS_CONTENTS_DIR) -name '*.tex')
 
-OUTPUT_DIR = output
+OUTPUT_DIR = dist
 
-all: $(OUTPUT_DIR)/cv.pdf $(OUTPUT_DIR)/research-statement.pdf
+all: $(PDFS)
 
-$(OUTPUT_DIR)/cv.pdf: $(CV_DIR)/main.tex $(CV_SRCS) $(CV_DIR)/publications.bib
+# Pattern rule — $* is the stem (doc directory name)
+$(OUTPUT_DIR)/%.pdf:
 	mkdir -p $(OUTPUT_DIR)
-	cd $(CV_DIR) && latexmk
-	cp $(CV_DIR)/main.pdf $@
+	cd $* && latexmk
+	cp $*/main.pdf $@
 
-$(OUTPUT_DIR)/research-statement.pdf: $(RS_DIR)/main.tex $(RS_SRCS) $(RS_DIR)/references.bib
-	mkdir -p $(OUTPUT_DIR)
-	cd $(RS_DIR) && latexmk
-	cp $(RS_DIR)/main.pdf $@
+# Per-document dependencies
+$(OUTPUT_DIR)/cv.pdf:                  cv/main.tex $(CV_SRCS) cv/publications.bib
+$(OUTPUT_DIR)/research-statement.pdf:  research-statement/main.tex $(RS_SRCS) research-statement/references.bib
+$(OUTPUT_DIR)/teaching-statement.pdf:  teaching-statement/main.tex
 
 clean:
-	cd $(CV_DIR) && latexmk -C
-	cd $(RS_DIR) && latexmk -C
+	for d in $(DOCS); do (cd $$d && latexmk -C); done
 	rm -rf $(OUTPUT_DIR)/

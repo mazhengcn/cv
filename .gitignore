@@ -25,7 +25,8 @@
 
 ### Build output ###
 aux/
-output/
+main.pdf
+main.synctex.gz
 
 ### Mac OS X ###
 ## Mac OS X metadata files:
