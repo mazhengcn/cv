@@ -4,10 +4,10 @@
 \section{Introduction and Research Vision}
 
 We stand at a remarkable inflection point in computational science.  The most
-pressing open problems of our time---controlled nuclear fusion, precision
-subsurface imaging for climate-critical carbon sequestration, next-generation
-semiconductor design, and predictive modeling of radiative transport in
-astrophysical and biomedical settings---share a common mathematical core: they
+pressing open problems of our time---controlled nuclear fusion (spanning both
+inertial and magnetic confinement), precision subsurface imaging via seismic
+full-waveform inversion, accurate dose calculation in radiation therapy, and
+complex multiscale rarefied gas dynamics---share a common mathematical core: they
 require solving kinetic equations and associated inverse problems at scales,
 speeds, and levels of physical fidelity that are fundamentally inaccessible to
 classical numerical methods.
@@ -27,27 +27,35 @@ to use extremely fine computational grids even when the macroscopic solution
 is globally smooth.
 
 Deep learning has demonstrated a striking capacity to approximate
-high-dimensional functions and solution operators with sample complexity far
-better than classical worst-case theory would predict.  Yet the na\"{i}ve
-application of neural networks to physics problems is beset by fundamental
-limitations: models trained without respect for physical structure violate
-conservation laws, behave catastrophically in stiff multiscale regimes where
-the Knudsen number $\varepsilon \ll 1$, and offer no theoretical guarantees
-for out-of-distribution generalization.
+high-dimensional functions and solution operators, often achieving sample
+complexities that defy classical worst-case predictions.  Yet, the na\"{i}ve
+application of neural networks to physical systems is plagued by fundamental
+limitations: black-box models routinely violate conservation laws, fail
+catastrophically in stiff multiscale regimes (where the Knudsen number
+$\varepsilon \ll 1$), and lack theoretical guarantees for out-of-distribution
+generalization.
 
-My research program addresses these limitations through what I call
-\emph{full-stack AI for Science}: a vertically integrated methodology that
-combines (i)~rigorous mathematical analysis of the underlying physics and the
-learning algorithm, (ii)~neural network architectures that encode physical
-structure as \emph{hard constraints} rather than soft regularization
-penalties, (iii)~scalable implementation exploiting modern accelerated
-hardware, and (iv)~production-quality open-source software that makes these
-methods accessible to the broader scientific community.  This program has
-produced more than 30 peer-reviewed articles and a suite of open-source
-packages---hosted at
-\href{https://github.com/mazhengcn}{\texttt{github.com/mazhengcn}}---that
-are actively used by research groups in applied mathematics, physics, and
-engineering.
+Currently, the dominant trend in AI for Science mirrors that of large language
+models (LLMs): scaling up to massive foundation models in pursuit of a
+``one-model-solves-all'' paradigm for PDEs. My philosophy fundamentally diverges
+from this monolithic approach. Instead, I advocate for developing compact,
+physically infused models tailored to specific governing equations---for
+instance, dedicating one specialized architecture to the radiative transfer
+equation and another to the Boltzmann equation. Within this framework, an LLM
+acts not as a universal PDE solver, but as an intelligent orchestrator
+coordinating an ensemble of domain-specific, physics-aware solvers. I term
+this paradigm the \emph{Agent of Real Physical Science}.
+
+My research program brings this vision to life through a framework I call
+\emph{full-stack AI for Science}: a vertically integrated methodology comprising
+(i)~rigorous mathematical analysis of both the physical system and the learning
+algorithm; (ii)~neural architectures that embed physical principles as \emph{hard
+constraints} rather than soft regularization penalties; (iii)~scalable algorithms
+designed for modern accelerated hardware; and (iv)~production-quality
+open-source software. To date, this integrated approach has yielded over 30
+peer-reviewed publications and a suite of widely adopted open-source packages
+(hosted at \href{https://github.com/mazhengcn}{\texttt{github.com/mazhengcn}})
+that are actively utilized across applied mathematics, physics, and engineering.
 
 \begin{figure}[H]
   \centering
