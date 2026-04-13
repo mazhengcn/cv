@@ -19,6 +19,8 @@ jobs:
         apt install --yes \
           fonts-roboto \
           fonts-adobe-sourcesans3 \
+          fonts-noto-sans \
+          fonts-noto-serif \
           ;
 
     - name: Compile
