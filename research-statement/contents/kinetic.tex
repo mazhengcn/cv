@@ -18,19 +18,52 @@ classical numerical discretizations become stiff and impose a time-step
 restriction $\Delta t = O(\varepsilon)$, adding an entire order of
 computational difficulty to an already intractable problem.
 
+Neural operators have emerged as a powerful paradigm for learning PDEs, offering capabilities that extend beyond traditional numerical solvers to modeling physical phenomena directly from experimental data. Concurrently, integrating physical constraints into machine learning models---popularized by architectures like PINNs and the DeepRitz method---has proven essential to significantly reduce the dependency on massive datasets. These twin principles drive our research program: first, developing \textbf{DeepRTE} to directly capture the complex structural mappings inherent in neural operators; and second, designing \textbf{Asymptotic-Preserving Neural Networks (APNNs)} to rigorously embed physical constraints into the training process, guaranteeing physical fidelity in multiscale regimes.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      node distance=1.2cm and 2.5cm,
+      font=\small\sffamily,
+      concept/.style={draw=accentcolor, thick, rounded corners=3pt, align=center, fill=accentcolor!5, minimum height=1.3cm, text width=6cm},
+      solution/.style={draw=black!70, thick, rounded corners=3pt, align=center, fill=white, minimum height=1.3cm, text width=6cm},
+      arrow/.style={-{Stealth[scale=1.1]}, thick, draw=accentcolor}
+    ]
+
+    % Concepts
+    \node[concept] (no) {\textbf{Neural Operators}\\[0.2em] \footnotesize Best for learning PDEs \& modeling\\physics directly from data};
+    \node[concept, right=0.8cm of no] (phys) {\textbf{Physical Constraints}\\[0.2em] \footnotesize Reduce data usage\\(e.g., DeepRitz, PINNs)};
+
+    % Solutions
+    \node[solution, below=1.2cm of no] (deeprte) {\textbf{DeepRTE}\\[0.2em] \footnotesize Solves the structure of neural operators};
+    \node[solution, below=1.2cm of phys] (apnn) {\textbf{APNNs}\\[0.2em] \footnotesize Addresses physical constraints in training};
+
+    % Edges
+    \draw[arrow] (no) -- (deeprte);
+    \draw[arrow] (phys) -- (apnn);
+
+  \end{tikzpicture}
+  \vspace{-0.5em}
+  \caption{Two pillars of our scientific machine learning framework: data-driven operator learning and physics-constrained efficiency.}
+\end{figure}
+
 \subsection{DeepRTE: A Foundation Model for Radiative Transfer}
 
 \emph{My most recent and important work} is the development of
-\textbf{DeepRTE}~\cite{DeepRTE2026}, the first pre-trained, attention-based
-\emph{neural operator foundation model} for the steady-state RTE.  Inspired
-by the large language model paradigm, the idea is to train a single model
-once on a massive, systematically generated dataset of RTE solutions---covering
-the full range of physically relevant scattering anisotropy parameters
-$g \in [0.1, 0.8]$---and then deploy it for instant inference on any new
-optical geometry without retraining.  DeepRTE learns the solution operator
-$\mathcal{A}: (I^{-};\, \mu_t, \mu_s, p) \mapsto I$, mapping the entire
-spatial configuration of inflow boundaries, attenuation/scattering
-coefficients, and phase functions directly to the full radiation field.
+\textbf{DeepRTE}~\cite{DeepRTE2026}, an efficient neural operator approach
+for the steady-state Radiative Transfer Equation (RTE). The RTE is a diﬀerential-integral
+equation that governs the propagation of radiation through a participating
+medium, with applications spanning diverse domains such as neutron transport,
+atmospheric radiative transfer, heat transfer, and optical imaging.
+Classical deterministic methods typically involve discretizing the equation
+in both spatial and angular variables, which is computationally expensive and
+is considered as one of the core tasks in high-performance computing.
+Our DeepRTE framework demonstrates superior computational eﬃciency for solving
+the steady-state RTE, surpassing traditional methods and existing neural
+network approaches. This eﬃciency is achieved by embedding physical
+information through derivation of the RTE and mathematically-informed network
+architecture, and using a mesh-free neural operator framework with inherent
+zero-shot capability.
 
 \begin{figure}[H]
   \centering
@@ -44,14 +77,21 @@ coefficients, and phase functions directly to the full radiation field.
     \toprule
     \rowcolor{accentcolor!10}
     \textbf{\textcolor{accentcolor}{Aspect}} & \textbf{\textcolor{accentcolor}{Classical Solvers (e.g., $S_N$)}} & \textbf{\textcolor{accentcolor}{DeepRTE Foundation Model}} \\
-    \textbf{Run Time (Inference)} & $10^4$--$10^6$ seconds per geometry & $\sim 10^{-2}$ s (GPU accel., $\sim 10^5\times$ speedup) \\
-    \textbf{Mathematical Scope} & Equation discretization & Direct operator mapping $\mathcal{A}: (I^{-}, \mu) \mapsto I$ \\
-    \textbf{Reusability} & None natively & Parameterized across optical $g \in [0.1, 0.8]$ \\
+    \textbf{Run Time (Inference)} & $10^4$--$10^6$ seconds per geometry & $\sim 2.3$ s ($4\times$ GPU, $83.9\times$ speedup) \\
+    \textbf{Mathematical Scope} & Equation discretization & Direct operator mapping $\mathcal{A}: (I^{-}, \mu_t, \mu_s, p) \mapsto I$ \\
+    \textbf{Reusability} & None natively & Zero-shot generalization without retraining \\
     \textbf{Distribution} & Specialized Fortran/C++ libraries & Hugging Face checkpoints, JAX/Flax APIs \\
     \bottomrule
   \end{tabularx}
   \vspace{-0.5em}
-  \caption{A paradigm shift in radiative transfer: DeepRTE replaces costly per-instance simulation with instant inference across variable geometries.}
+  \caption{A paradigm shift in radiative transfer: DeepRTE replaces costly per-instance simulation with efficient inference across variable geometries.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/architecture.pdf}
+  \caption{DeepRTE network architecture. The diagram illustrates the alterations in various inputs throughout the process. The Attenuation Module processes phase coordinates and coefficients to approximate operators $\mathcal{J}$ and $\mathcal{L}$, followed by the Scattering Module handling angular quadrature evaluations for operator iterations. Ultimately, the Green's function $G^{\text{NN}}$ is multiplied by the boundary conditions and integrated over $\Gamma_-$ to compute the radiation field.}
+  \label{fig:deeprte_arch}
 \end{figure}
 
 The engineering realization is as critical as the mathematical novelty.  DeepRTE
@@ -66,49 +106,39 @@ isolated scheme for an individual problem, DeepRTE provides the community
 with a \emph{reusable computational asset} that amortizes the immense initial
 training cost across thousands of downstream, domain-specific tasks.
 
-\subsection{Asymptotic-Preserving Neural Networks}
+\subsection{Asymptotic-Preserving Neural Networks Framework}
 
-The central contribution of my group in this area is the development of
-\emph{Asymptotic-Preserving Neural Networks}
-(APNNs)~\cite{APNN2023,APNN2024}: a fundamentally new class of
-physics-informed neural network architectures that provably inherit the
-asymptotic-preserving (AP) property of the best classical schemes.  The
-essential novelty is architectural.  We encode the micro--macro decomposition
-$f = \rho M + \varepsilon g$ (where $M$ is the local Maxwellian equilibrium
-and $g$ is the microscopic deviation) directly into the network's structural
-inductive bias, rather than including it as a soft loss-function term that
-can be violated during optimization.  The ``macro'' branch of the network is
-constrained to satisfy the correct limiting diffusion equation as
-$\varepsilon \to 0$, and the ``micro'' branch is constrained to vanish in the
-same limit.  This is, to our knowledge, the first class of neural network
-methods for kinetic equations with a rigorous, verifiable AP guarantee
-independent of training quality or random seed.
+The central contribution of my group in this area is the development of the \emph{Asymptotic-Preserving Neural Networks} (APNNs) framework. This is not merely a single model, but a fundamentally new series of physics-informed methodologies to address multiscale problems and asymptotic-preserving (AP) properties.
 
-The framework has been applied across the canonical multiscale kinetic
-systems:
+The key insight driving this framework is that when using neural networks to solve PDEs, the equations are inherently transformed into optimization problems. Consequently, the hard constraints of classical solutions and parameters are relaxed into soft constraints. In a data-driven setting or within pure PINN setups, such soft constraints fail drastically in extreme multiscale regimes (e.g., Knudsen number $\varepsilon \to 0$), leading to severe performance degradation due to spectral bias and stiffness.
+
+To rectify this, APNNs decouple the multiscale constraints. We incorporate the micro--macro decomposition algebraically into the overall construction, forming multiple or even redundant equations to guide the relaxed optimization safely toward the correct limit. Essential physical properties---such as mass/density conservation or Maxwellian convergence---are inherently satisfied as \textbf{hard architectural constraints}. This formulation guarantees that even with highly limited labeled data and the presence of optimization inaccuracies, the learned network will naturally preserve uniform accuracy across all scales and correctly degenerate to the macroscopic limits. The framework is flexible and not bound merely to PINNs; it thrives seamlessly with DeepRitz or general neural-operator paradigms.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{figures/apnn-diagram.png}
+  \caption{The AP commutative diagram: minimizing the residual $\mathcal{R}\to 0$ at finite $\varepsilon$ automatically yields the correct $\varepsilon\to 0$ limit, guaranteeing uniform accuracy across all scales.}
+  \label{fig:apnn_diagram}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/apnn-example.png}
+  \caption{The APNN architecture with decoupled macro branch (green, density $\rho$) and micro branch (blue, deviation $g$), each subject to the correct limiting equations as hard constraints during training.}
+  \label{fig:apnn_arch}
+\end{figure}
+
+The framework has successfully revolutionized the treatment of numerous canonical multiscale kinetic systems. We summarize these works below:
+
 \begin{itemize}
-  \item \emph{Linear transport equations}~\cite{APNN2023,APNN2024}: uniform
-    accuracy from the kinetic regime to the diffusion limit without mesh
-    refinement, on problems where standard PINNs fail completely for
-    $\varepsilon < 10^{-3}$.
+  \item \textbf{Basic APNN for Linear Transport}~\cite{APNN2023,APNN2024}: We first established the APNN framework using the even-odd decomposition for linear transport equations. We proved uniform accuracy from the kinetic regime to the diffusion limit. The network achieves optimal performance on problems where standard PINNs fail completely for $\varepsilon < 10^{-3}$, without relying on strict mesh refinement.
 
-  \item \emph{Vlasov--Poisson--Fokker--Planck system in the high-field
-    regime}~\cite{APNN-VPFP2024}: AP behavior in the presence of long-range
-    electromagnetic self-interactions, extending the framework to
-    nonlinearly coupled systems.
+  \item \textbf{APNN for Non-linear Systems (VPFP)}~\cite{APNN-VPFP2024}: Moving to high-field regimes, we extended APNNs to the Vlasov--Poisson--Fokker--Planck system. By adapting the loss formulation and microscopic structures, the updated network captures AP behavior under complex, long-range electromagnetic self-interactions.
 
-  \item \emph{Gray radiative transfer via even--odd decomposition}
-    (AP-CON)~\cite{APCON2024}: operator-learning variants using convolutional
-    DeepONets that generalize across $10^4$ distinct optical parameter
-    configurations without retraining, achieving accuracy competitive with
-    reference $S_N$ solvers while running $10^3\times$ faster at inference.
-\end{itemize}
+  \item \textbf{Operator-Learning variants (AP-CON, GRTE-APNN)}~\cite{APCON2024, Wu2025}: Integrating operator theories, we constructed variants like AP-CON for Gray radiative transfer using convolutional DeepONets. These advanced pipelines generalize across $10^4$ distinct optical configurations seamlessly, reaching classical $S_N$ solver accuracy but operating $10^3\times$ faster in inference.
 
-Reference implementations with training scripts, pre-computed datasets, and
-documented APIs are publicly available:
-\begin{itemize}[nosep, topsep=0.25em, leftmargin=2.5em]
-  \item \texttt{\href{https://github.com/mazhengcn/apnns}{github.com/mazhengcn/apnns}}\enspace(APNNs)
-  \item \texttt{\href{https://github.com/mazhengcn/apcons}{github.com/mazhengcn/apcons}}\enspace(AP-CON)
+  \item \textbf{Recurrent Temporal Extensions (RT-APNN)}~\cite{RTAPNN2025}: For pure time-dependent analysis, we developed Recurrent Temporal APNNs, employing GRU mechanisms with physical priors to capture long-time dynamics smoothly without suffering instability across varied timescales.
+
 \end{itemize}
 
 \subsection{Asymptotic-Preserving Random Feature Methods}
