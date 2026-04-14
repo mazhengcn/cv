@@ -36,7 +36,7 @@ prior-training loop.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.45\textwidth]{figures/dl-fwi-000.png}
+  \includegraphics[width=0.45\textwidth]{figures/fwi.png}
   \caption{Illustration of the full-waveform inversion (FWI) setting: seismic
     sources (yellow stars) generate elastic waves (red arcs) that propagate through
     layered subsurface media; receivers (grey cylinders) record the resulting
@@ -81,6 +81,16 @@ conventional gradient-based FWI on challenging benchmarks featuring complex
 subsurface structures and noisy measurements, establishing the viability of
 implicit neural priors for PDE-constrained inversion.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/unsupervised_fwi.png}
+  \caption{Neural re-parametrization for unsupervised FWI: a fixed random tensor
+    $\mathbf{z}_{0}$ is passed through a learned neural network $f_{\theta}$ to
+    produce velocity models. The network architecture acts as an implicit prior,
+  constraining solutions to a smooth low-dimensional manifold of plausible fields.}
+  \label{fig:unsupervised-fwi}
+\end{figure}
+
 %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 \subsection{ODE-DPS: Score-Based Diffusion Posterior Sampling for PDE Inverse Problems}
 
@@ -99,6 +109,15 @@ reversing the noising dynamics,
   + \sqrt{\beta(t)}\,d\bar{\omega},
 \]
 with a likelihood-guidance correction injected at each step.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/dm.png}
+  \caption{Illustration of score-based diffusion models: a learned score function
+    $\nabla_{\mathbf{x}}\log p(\mathbf{x}(t))$ guides the reverse noising process
+  from pure noise toward samples of the true prior distribution.}
+  \label{fig:diffusion-model}
+\end{figure}
 
 The critical algorithmic contribution is an \textbf{ODE-based variant} that replaces the
 stochastic reverse dynamics with a deterministic probability-flow ODE.  The key

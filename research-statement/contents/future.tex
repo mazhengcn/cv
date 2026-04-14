@@ -3,11 +3,19 @@
 %%--------------------------------------------------------------------------
 \section{Future Research Directions}
 
-My ongoing and planned research evolves along three interconnected frontiers,
-each combining fundamental mathematical questions with high-stakes engineering
-applications.
+\noindent\textit{Why it matters.}\enspace
+The transition from specialized neural solvers to the overarching
+``Agent of Real Physical Science'' paradigm requires overcoming several rigid
+theoretical and scale-related bottlenecks. My ongoing and planned research
+addresses these bottlenecks across three interconnected frontiers, each
+combining fundamental mathematical questions with high-stakes engineering
+applications. These directions extend the full-stack AI logic from the
+foundational models developed to date toward next-generation plasma physics,
+provable uncertainty quantification in inverse problems, and generalized
+structure-preserving learning.
 
-\medskip\noindent\textbf{Foundation models for plasma and fusion confinement.}
+\subsection{Foundation Models for Plasma and Fusion Confinement}
+
 Building on the DeepRTE paradigm, I am developing operator-learning
 foundation models for the Vlasov--Maxwell system governing fusion plasma
 dynamics.  The scientific target is a surrogate model that replaces PIC
@@ -21,7 +29,8 @@ distribution function, entropy inequality) within the operator-learning
 architecture, connecting directly to the structure-preserving research thread
 below.
 
-\medskip\noindent\textbf{Convergence theory for generative models in inverse problems.}\enspace
+\subsection{Convergence Theory for Generative Models in Inverse Problems}
+
 Current diffusion-model-based inversion methods, including ODE-DPS, rely on
 heuristic justifications for the posterior score approximation step.  I plan
 to develop a rigorous error analysis that bounds the Wasserstein distance
@@ -33,7 +42,8 @@ classical Bayesian regularization theory, providing what would be, to our
 knowledge, the first end-to-end convergence guarantee for generative inversion
 methods.
 
-\medskip\noindent\textbf{Structure-preserving operator learning.}\enspace
+\subsection{Structure-Preserving Operator Learning}
+
 Inspired by symplectic integrators and AP schemes in classical numerical
 analysis, I aim to build operator-learning architectures that provably
 preserve nonlinear conservation laws ($L^p$ mass, energy, entropy inequality)
